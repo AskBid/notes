@@ -1,31 +1,51 @@
+# Unix Commands
+    $ ss -nap | grep cardano
+see all the processes related to cardano
+
+    $ ss -nap | grep 28024(pid)
+check the IP connected to the actual process you found above
+
+    $ kill $(lsof -t -i:8081)
+stop the node by the port is using
+
+    $ sudo ufw status verbose
+    $ sudo enable
+    $ sudo ufw allow 8081/udp
 
 
-
-##Run Block-Producer
+###Run Block-Producer
      cardano-node run \
      --topology block-producing/ff-topology.json \
      --database-path block-producing/db \
      --socket-path block-producing/db/node.socket \
-     --host-addr 81.149.31.222 \
+     --host-addr 0.0.0.0 \
      --port 8080 \
-     --config block-producing/ff-config.json
-##Run Relay
+     --config ff-config.json
+###Run Relay
      cardano-node run \
      --topology relay/ff-topology.json \
      --database-path relay/db \
      --socket-path relay/db/node.socket \
-     --host-addr 81.149.31.222 \
+     --host-addr 0.0.0.0 \
      --port 8081 \
+     --config relay/ff-config.json
+###Run Relay 2
+     cardano-node run \
+     --topology relay2/ff-topology.json \
+     --database-path relay2/db \
+     --socket-path relay2/db/node.socket \
+     --host-addr 0.0.0.0 \
+     --port 8082 \
      --config relay/ff-config.json
 
 
-# Assign SOCKET
+### Assign SOCKET
      $ export CARDANO_NODE_SOCKET_PATH=/home/sergio/github/cardano-node/relay/db/node.socket
 
-# Get Faucet Money
+## Get Faucet Money
      curl -v -XPOST "https://faucet.ff.dev.cardano.org/send-money/00d7e29f8bb92b0dc04d346181abf30f830f2eb4995e31b6bd20d431988f3db315ed78d87afd72f31c3c4b53c5f9d34175fb53ffbf981b3b011b05a538bd39ae0b
-
-# check balance
+# Others
+## check balance
       cardano-cli shelley query utxo \
      --address $(cat payment.addr) \
      --testnet-magic 42
